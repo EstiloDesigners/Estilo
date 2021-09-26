@@ -1,4 +1,4 @@
-package com.estilo.shopping;
+package com.dhruva.shopping;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,8 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.estilo.shopping.Model.Users;
-import com.estilo.shopping.Prevalent.Prevalent;
+import com.dhruva.shopping.Model.Users;
+import com.dhruva.shopping.Prevalent.Prevalent;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText InputPhoneNumber, InputPassword;
     private Button LoginButton;
     private ProgressDialog loadingBar;
-    private TextView AdminLink, NotAdminLink;
+    private TextView AdminLink, NotAdminLink,ForgetPasswordLink;
     private String parentDbName = "Users";
     private CheckBox chkBoxRememberMe;
     @Override
@@ -41,12 +41,24 @@ public class LoginActivity extends AppCompatActivity {
         AdminLink = (TextView) findViewById(R.id.admin_panel_link);
         NotAdminLink = (TextView) findViewById(R.id.not_admin_panel_link);
         loadingBar = new ProgressDialog(this);
+
         chkBoxRememberMe = (CheckBox) findViewById(R.id.remember_me_chkb);
         Paper.init(this);
+
+        ForgetPasswordLink=findViewById(R.id.forget_password_link);
+
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoginUser();
+            }
+        });
+        ForgetPasswordLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                intent.putExtra("check","login");
+                startActivity(intent);
             }
         });
 
@@ -121,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Welcome Admin, you are logged in Successfully...", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 
-                                Intent intent = new Intent(LoginActivity.this, com.estilo.shopping.AdminCategoryActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, AdminCategoryActivity.class);
                                 startActivity(intent);
                             }
                             else if (parentDbName.equals("Users")){
